@@ -29,8 +29,6 @@ dependencies {
 	implementation 'junit:junit:4.12'
 	compile group: 'javax.validation', name: 'validation-api', version: '2.0.1.Final'
 
-
-
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'com.h2database:h2'
 	annotationProcessor 'org.projectlombok:lombok'

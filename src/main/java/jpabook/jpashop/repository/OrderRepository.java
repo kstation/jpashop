@@ -99,4 +99,34 @@ public class OrderRepository {
                         " join fetch o.delivery d", Order.class)
                 .getResultList();
     }
+
+    public List<Order> findAllWithItem() {
+        return em.createQuery(
+                "select distinct o from Order o" +
+                        " join fetch o.member m" +
+                        " join fetch o.delivery d" +
+                        " join fetch o.orderItems oi" +
+                        " join fetch oi.item i", Order.class)
+                .getResultList();
+    }
+
+    //toone관계는 페이징이 잘먹는다.
+    //appllication yml default batch size에 맞게 하위 쿼리를 건바이건이 아닌 in 조건으로 호출
+    public List<Order> findAllWithMemberDelivery(int offset, int limit) {
+        return em.createQuery(
+                "select o from Order o" +
+                        " join fetch o.member m" +
+                        " join fetch o.delivery d", Order.class)
+                .setFirstResult(offset)
+                .setMaxResults(limit)
+                .getResultList();
+
+        // 실제 위와 아래는 동일하다. (why order조회시 order와 관련된  인티티를 패치조인하기 때문)
+        /*
+        return em.createQuery("select o from Order o", Order.class)
+                .setFirstResult(offset)
+                .setMaxResults(limit)
+                .getResultList();
+         */
+    }
 }
